@@ -63,9 +63,9 @@ router.post('/:id/comments', function(req, res){
 });
 
 router.get('/:id/tags', function(req, res) {
-	// var favoriteId = req.params.id;
+	var favoriteId = req.params.id;
 	db.favorite.find({
-		where: {id: id},
+		where: {id: favoriteId},
 		include: [db.tag]
 	}).then(function(fav) {
 		res.render('favorites/tag', {favorite: fav});
@@ -73,10 +73,10 @@ router.get('/:id/tags', function(req, res) {
 });
 
 router.post('/:id/tags', function(req, res){
-	db.tag.create({
+	db.tag.findOrCreate({
 		name: req.body.movieTag
 	}).then(function() {
-		res.redirect('/favorites' + req.params.id + '/tags');
+		res.redirect('/favorites/' + req.params.id + '/tags');
 	});
 });
 module.exports = router;
